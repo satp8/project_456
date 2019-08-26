@@ -24,6 +24,6 @@ const appStack = createSwitchNavigator({
 } 
 )
 
-const appContainer = createAppContainer(appStack) 
+const appContainer = createAppContainer(appStack)  
 
 export default appContainer;
