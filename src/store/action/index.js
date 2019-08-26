@@ -4,6 +4,7 @@ export {
   signin,
   signup_form_submission,
   signup_form_database,
-  loading_false
+  loading_false,
+  checkbox
 } from './Authaction'
 

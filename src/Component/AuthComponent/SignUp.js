@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import * as projectAction from '../../store/action/index';
 import {connect} from 'react-redux';
 import {View,Text,StyleSheet,ImageBackground,ActivityIndicator,TouchableNativeFeedback,TextInput} from 'react-native';
-import {Input,Button} from 'react-native-elements';
+import {Input,Button,CheckBox} from 'react-native-elements';
 import bgimg from '../../../asset/Memariani.jpg'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { showMessage, hideMessage } from "react-native-flash-message";
@@ -27,6 +27,21 @@ export function YourCustomTransition(animValue, position = "top") {
   } 
  
 class SignUp extends Component {
+    
+    checkboxhandler = (type) => {
+
+        let  userType
+        if(type === 'Customer'){
+            userType = 'Customer'
+          
+
+        }else if(type === 'serviceProvider'){ 
+            userType = 'serviceProvider'
+         
+        }
+       
+        this.props.checkbox(userType)
+    }
 
     authhandler = (type,e) => {
         let userid
@@ -172,6 +187,26 @@ class SignUp extends Component {
                   </View>
                   </TouchableNativeFeedback> 
                   <Text style={{marginTop:10,marginLeft:100}}>Already signUp? <Text style={{ color:'blue',textDecorationLine:'underline'}} onPress={()=> this.props.navigation.navigate('signin')}>SignIn</Text></Text>
+                  
+                  <View style={{flexDirection:'row',marginLeft:25}}>
+                  <CheckBox 
+                    title='Customer' 
+                    checked={this.props.Customer}
+                    containerStyle={{backgroundColor:'transparent',borderWidth:0}}  
+                    checkedColor='#2c3e50'
+                    onPress={(e)=> this.checkboxhandler('Customer')}
+
+                  />
+                  <CheckBox 
+                    title='ServiceProvider' 
+                    checked={this.props.serviceProvider}
+                    containerStyle={{backgroundColor:'transparent',borderWidth:0}}
+                    checkedColor='#2c3e50'  
+                    
+                    onPress={(e)=> this.checkboxhandler('serviceProvider')}
+
+                  />
+                  </View>
            </View>
             </View>
             </ImageBackground>
@@ -199,7 +234,10 @@ const mapStateToprops = (state) => {
         name:state.auth.name,
         form_submit: state.auth.formSubmit, 
         loading:state.auth.loading,
-        token: state.auth.token
+        token: state.auth.token,
+        // checked:state.auth.checked
+        Customer:state.auth.Customer,
+        serviceProvider:state.auth.serviceProvider
     }
 }
 
@@ -207,7 +245,8 @@ const mapDispatchToProps = dispatch => {
     return {
         signup_form_submission: (userid,uservalue) => dispatch(projectAction.signup_form_submission(userid,uservalue)),
         signup_form_database: (name,email,password) => dispatch(projectAction.signup_form_database(name,email,password)),
-        loading_false:() => dispatch(projectAction.loading_false())
+        loading_false:() => dispatch(projectAction.loading_false()),
+        checkbox: (userType) => dispatch(projectAction.checkbox(userType))
     }
 }
 export default connect(mapStateToprops,mapDispatchToProps)(SignUp);

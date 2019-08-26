@@ -127,3 +127,12 @@ export const loading_false = () => {
     }
 }
 
+export const checkbox = (userType) => {
+    return dispatch => {
+        dispatch({
+            type:actionType.CHECKBOX,
+            userType:userType,
+           
+        })
+    }
+}

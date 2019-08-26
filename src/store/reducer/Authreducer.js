@@ -8,7 +8,10 @@ const initialState = {
     name:'',
     error:'',
     userid:'',
-    formSubmit:false
+    formSubmit:false,
+    checked:true,
+    Customer:false,
+    serviceProvider:false
 }
 
 const Auth = (state=initialState,action) => {
@@ -67,6 +70,20 @@ const Auth = (state=initialState,action) => {
                 ...state,
                 loading:true
             }
+        
+        case actionType.CHECKBOX:
+            if(action.usertype === 'Customer'){
+                return {
+                    ...state,
+                    Customer: !state.Customer
+                }
+            }else if(action.usertype === 'serviceProvider'){
+                return {
+                    ...state,
+                    serviceProvider: !state.serviceProvider
+                }
+            }
+
         default:
             return state
     }
