@@ -12,31 +12,31 @@ export const add_auth = (userid,uservalue) => {
     }
 }
 
-export const signin  = (email,password) => {
-    console.log(email,password)
+// export const signin  = (email,password) => {
+//     console.log(email,password)
     
-    return dispatch => {
-        dispatch({
-            type:actionType.SIGNIN,   
-    }) 
+//     return dispatch => {
+//         dispatch({
+//             type:actionType.SIGNIN,   
+//     }) 
               
-        let data ={
-            email: email,
-            password:password,
-            returnSecureToken: true
-        }
-        axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDeHDYkXvZ82lFpNeX-MsnDOxYpiq2em-s',data)
-        .then((response) => {
-            //  console.log(response.data.idToken)
-             dispatch(submit_token(response.data.idToken))
-        })
-        .catch((error) => {
-            //  console.log(error.response.data.error.message)  
-             dispatch(submit_token_error(error.response.data.error.message))
-        }) 
+//         let data ={
+//             email: email,
+//             password:password,
+//             returnSecureToken: true
+//         }
+//         axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDeHDYkXvZ82lFpNeX-MsnDOxYpiq2em-s',data)
+//         .then((response) => {
+//             //  console.log(response.data.idToken)
+//              dispatch(submit_token(response.data.idToken))
+//         })
+//         .catch((error) => {
+//             //  console.log(error.response.data.error.message)  
+//              dispatch(submit_token_error(error.response.data.error.message))
+//         }) 
  
-    } 
-}    
+//     } 
+// }    
 
 export const submit_token = (idToken) => {
     return dispatch => {
@@ -60,40 +60,46 @@ export const signup_form_submission = (userid,uservalue) => {
         dispatch(add_auth(userid,uservalue))
     }
 }
-export const signup_form_database = (name,email,password) => {
+export const signup_form_database = (name,email,password,role) => {
     let data = {
-        name:name,
+        userName:name,
         email:email,
-        password:password
+        password:password,
+        userType:role
     }
     return dispatch => {
         dispatch(signup_loading())
-        axios.post('https://rn-project1.firebaseio.com/form.json',data)
-        .then(()=>{
-           dispatch(signup(email,password))
-        })
+        console.log(name,email,password,role)
+        axios.post('http://13.127.108.174:3000/uc/registerUser',data)
+        .then((res)=>{
+            console.log(res) 
+            //    dispatch(signup(email,password))
+               dispatch(signup_error(res.data.message)) 
+ 
+            })
         .catch((error)=>{
-            dispatch(signup_error(error.response.data.error.message))
-        })
-    }
+                console.log(error)
+                dispatch(signup_error(error)) 
+            }) 
+        } 
 }
 
-export const signup = (email,password) => {
-    return dispatch => {
-      let data = {
-          email:email,
-          password:password
-      }
-      axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDeHDYkXvZ82lFpNeX-MsnDOxYpiq2em-s',data)
-      .then((response) => {
-        //   console.log(response.data.idToken,response.data.localId)
-        dispatch(signup_submit())
-      })
-      .catch(error => {
-          console.log(error.response.data.error.message)  
-      })
-    }
-}
+// export const signup = (email,password) => {
+//     return dispatch => {
+//       let data = {
+//           email:email,
+//           password:password
+//       }
+//       axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDeHDYkXvZ82lFpNeX-MsnDOxYpiq2em-s',data)
+//       .then((response) => {
+//         //   console.log(response.data.idToken,response.data.localId)
+//         dispatch(signup_submit())  
+//       })
+//       .catch(error => {
+//           console.log(error.response.data.error.message)  
+//       })
+//     }
+// }
 export const signup_loading = () => {
     return dispatch => {
         dispatch({

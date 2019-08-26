@@ -2,7 +2,7 @@ import * as actionType from '../action/actionType';
 
 const initialState = {
     email:'',
-    password:'',
+    password:'',  
     token:'',
     loading:false,
     name:'',
@@ -63,7 +63,11 @@ const Auth = (state=initialState,action) => {
                 ...state,  
                 loading:false,
                 email:'',
-                password:''
+                password:'',
+                error:'',
+                name:'', 
+                Customer:false,
+                serviceProvider:false
             }
         case actionType.SIGNUP_LOADING:
             return {
@@ -72,15 +76,36 @@ const Auth = (state=initialState,action) => {
             }
         
         case actionType.CHECKBOX:
-            if(action.usertype === 'Customer'){
-                return {
-                    ...state,
-                    Customer: !state.Customer
+            console.log(action)
+            if(action.userType === 'Customer' ){
+                if(state.serviceProvider === false){
+                    return {
+                        ...state,
+                        Customer: !state.Customer,
+                        serviceProvider: state.serviceProvider
+                    }
+                }else if(state.serviceProvider === true){
+                    return {
+                        ...state,
+                        Customer: !state.Customer, 
+                        serviceProvider: !state.serviceProvider
+                    } 
                 }
-            }else if(action.usertype === 'serviceProvider'){
-                return {
-                    ...state,
-                    serviceProvider: !state.serviceProvider
+                 
+            }
+            else if(action.userType === 'serviceProvider' ){ 
+                if(state.Customer === false){
+                    return {
+                        ...state,
+                        Customer: state.Customer,
+                        serviceProvider: !state.serviceProvider
+                    }
+                }else if(state.Customer === true){
+                    return {
+                        ...state,
+                        Customer: !state.Customer, 
+                        serviceProvider: !state.serviceProvider
+                    }
                 }
             }
 

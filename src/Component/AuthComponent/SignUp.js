@@ -46,7 +46,7 @@ class SignUp extends Component {
     authhandler = (type,e) => {
         let userid
         let uservalue
-        if(type === 'email'){
+        if(type === 'email' && (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)){
             userid = 'email'
             uservalue = e 
 
@@ -61,10 +61,13 @@ class SignUp extends Component {
     } 
 
     onSubmit = () => {
+        var emailval = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        var passval = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+
         let name = this.props.name
         let email = this.props.email
         let password = this.props.password
-        if(name == ''){
+        if(name === ''){
             errorinfo = showMessage({
                 message: 'Please fill the name',
                 floating:true,
@@ -72,25 +75,56 @@ class SignUp extends Component {
                 position:'center',
                 transitionConfig: YourCustomTransition,
               });   
-        }else if(email == ''){
+        }else if(email === ''){
             errorinfo = showMessage({
-                message: 'Please fill the emaIL',
+                message: 'Please fill the email',
                 floating:true,
                 backgroundColor:'#000',
                 position:'center',
                 transitionConfig: YourCustomTransition,
               });   
-        }else if(password == ''){
+        }else if(!email.match(emailval)){
+            errorinfo = showMessage({
+                message: 'Invalid email',
+                floating:true,
+                backgroundColor:'#000',
+                position:'center',
+                transitionConfig: YourCustomTransition,
+              }); 
+        }else if(password === ''){
             errorinfo = showMessage({
                 message: 'Please fill the password',
                 floating:true,
                 backgroundColor:'#000',
                 position:'center',
                 transitionConfig: YourCustomTransition,
-              });   
-        }else{
-        this.props.signup_form_database(name,email,password) 
+            });   
         }
+        // else if(!password.match(passval)){
+        //     errorinfo = showMessage({
+        //         message: 'Invalid Password',
+        //         floating:true,
+        //         backgroundColor:'#000',
+        //         position:'center',
+        //         transitionConfig: YourCustomTransition,
+        //     }); 
+        // }
+        else if(this.props.Customer === false && this.props.serviceProvider === false){
+            errorinfo = showMessage({
+                message: 'Please choose the role',
+                floating:true,
+                backgroundColor:'#000',
+                position:'center',
+                transitionConfig: YourCustomTransition, 
+              }); 
+        }
+
+        if(this.props.Customer === true && this.props.serviceProvider === false){
+            this.props.signup_form_database(name,email,password,'Customer') 
+        }else if(this.props.Customer === false && this.props.serviceProvider === true){
+            this.props.signup_form_database(name,email,password,'serviceProvider') 
+        }
+        
     }
   
     render(){
@@ -114,9 +148,31 @@ class SignUp extends Component {
             />
         } 
 
+        if(this.props.error){
+        loading = <Button 
+        onPress={this.onSubmit} 
+        titleStyle={{color:'#000'}}
+        type='outline' 
+        title='Submit'
+        buttonStyle={{borderColor:'#000',borderRadius:10}}
+        />;
+        }
+
         if(this.props.form_submit){
             this.props.navigation.navigate('signin')
             this.props.loading_false()  
+        }
+
+        let error;
+        if(this.props.error){
+            error = showMessage({
+                message: this.props.error,
+                floating:true,
+                backgroundColor:'#000',
+                position:'center',
+                transitionConfig: YourCustomTransition, 
+              }); 
+            this.props.loading_false()
         }
 
         return(
@@ -143,6 +199,7 @@ class SignUp extends Component {
                   } />
                   <View>
                   {this.errorinfo} 
+                  {error}
                   </View>
                   <Input 
                   inputContainerStyle={{borderWidth:1,borderRadius:20,margin:10}} 
@@ -181,13 +238,6 @@ class SignUp extends Component {
                       />
                   } />
 
-                  <TouchableNativeFeedback> 
-                  <View style={styles.buttonstyle}>  
-                  {loading}
-                  </View>
-                  </TouchableNativeFeedback> 
-                  <Text style={{marginTop:10,marginLeft:100}}>Already signUp? <Text style={{ color:'blue',textDecorationLine:'underline'}} onPress={()=> this.props.navigation.navigate('signin')}>SignIn</Text></Text>
-                  
                   <View style={{flexDirection:'row',marginLeft:25}}>
                   <CheckBox 
                     title='Customer' 
@@ -207,6 +257,14 @@ class SignUp extends Component {
 
                   />
                   </View>
+
+                  <TouchableNativeFeedback> 
+                  <View style={styles.buttonstyle}>  
+                  {loading}
+                  </View>
+                  </TouchableNativeFeedback> 
+                  <Text style={{marginTop:10,marginLeft:100}}>Already signUp? <Text style={{ color:'blue',textDecorationLine:'underline'}} onPress={()=> this.props.navigation.navigate('signin')}>SignIn</Text></Text>
+                  
            </View>
             </View>
             </ImageBackground>
@@ -235,18 +293,19 @@ const mapStateToprops = (state) => {
         form_submit: state.auth.formSubmit, 
         loading:state.auth.loading,
         token: state.auth.token,
-        // checked:state.auth.checked
         Customer:state.auth.Customer,
-        serviceProvider:state.auth.serviceProvider
+        serviceProvider:state.auth.serviceProvider,
+        error:state.auth.error
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         signup_form_submission: (userid,uservalue) => dispatch(projectAction.signup_form_submission(userid,uservalue)),
-        signup_form_database: (name,email,password) => dispatch(projectAction.signup_form_database(name,email,password)),
+        signup_form_database: (name,email,password,role) => dispatch(projectAction.signup_form_database(name,email,password,role)),
         loading_false:() => dispatch(projectAction.loading_false()),
-        checkbox: (userType) => dispatch(projectAction.checkbox(userType))
+        checkbox: (userType) => dispatch(projectAction.checkbox(userType)),
+        loading_false: () => dispatch(projectAction.loading_false())
     }
 }
 export default connect(mapStateToprops,mapDispatchToProps)(SignUp);

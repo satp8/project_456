@@ -6,8 +6,9 @@ import Main from './MainComponent/Main';
 import Profile from './MainComponent/Profile';
 
 const authStack = createSwitchNavigator({
+    signin: SignIn,
     signup: SignUp,
-    signin: SignIn
+   
 
 })
 
@@ -15,7 +16,7 @@ const mainStack = createStackNavigator({
     main:Main, 
     profile:Profile 
 })
-
+ 
 const appStack = createSwitchNavigator({
    auth:authStack,
    main:mainStack
