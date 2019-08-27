@@ -12,37 +12,45 @@ export const add_auth = (userid,uservalue) => {
     }
 }
 
-// export const signin  = (email,password) => {
-//     console.log(email,password)
+export const signin  = (email,password) => {
+    console.log(email,password)
     
-//     return dispatch => {
-//         dispatch({
-//             type:actionType.SIGNIN,   
-//     }) 
+    return dispatch => {
+        dispatch({
+            type:actionType.SIGNIN,   
+    }) 
               
-//         let data ={
-//             email: email,
-//             password:password,
-//             returnSecureToken: true
-//         }
-//         axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDeHDYkXvZ82lFpNeX-MsnDOxYpiq2em-s',data)
-//         .then((response) => {
-//             //  console.log(response.data.idToken)
-//              dispatch(submit_token(response.data.idToken))
-//         })
-//         .catch((error) => {
-//             //  console.log(error.response.data.error.message)  
-//              dispatch(submit_token_error(error.response.data.error.message))
-//         }) 
- 
-//     } 
-// }    
+        let data ={
+            email: email,
+            password:password,
+        }
+        axios.post('http://13.127.108.174:3000/uc/loginUser',data)
+        .then((response) => { 
+             console.log(response)
+            let userType = response.data.data[0].value.userType
+            let token = response.data.data[0].value.token
+            let serviceId = response.data.data[0].value.serviceId 
+            let error = response.data.message  
+            console.log(error) 
+            console.log(token)
+            if(token){
+                dispatch(submit_token(userType,token,serviceId)) 
+                dispatch(submit_token_error(error))
+            }
+            if(error) {
+                dispatch(submit_token_error(error))
+            }
+        }) 
+    } 
+}    
 
-export const submit_token = (idToken) => {
+export const submit_token = (userType,token,serviceId) => {
     return dispatch => {
         dispatch({
             type:actionType.SUBMIT_TOKEN,
-            token: idToken
+            token: token,
+            userType:userType,
+            serviceId:serviceId
         })
     }
 }

@@ -1,12 +1,14 @@
 import React,{Component} from 'react';
-import {Text} from 'react-native';
+import {Text,View} from 'react-native';
 
 class Main extends Component {
    render(){
        return(
-           <Text>Main</Text>
+        <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Text>Main Screen</Text>
+      </View> 
        )
    }
-}
+} 
 
 export default Main;

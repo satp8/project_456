@@ -6,6 +6,9 @@ import {Input,Button,CheckBox} from 'react-native-elements';
 import bgimg from '../../../asset/Memariani.jpg'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { showMessage, hideMessage } from "react-native-flash-message";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import FlashMessage from "react-native-flash-message";
+
 
 export function YourCustomTransition(animValue, position = "top") {
     const opacity = animValue.interpolate({
@@ -177,6 +180,7 @@ class SignUp extends Component {
 
         return(
             <ImageBackground source={bgimg} style={{width: '100%', height: '100%'}}>
+                 <KeyboardAwareScrollView>
             <View style={styles.container}>
             <View style={{marginTop:100}}> 
                <Input 
@@ -263,10 +267,12 @@ class SignUp extends Component {
                   {loading}
                   </View>
                   </TouchableNativeFeedback> 
-                  <Text style={{marginTop:10,marginLeft:100}}>Already signUp? <Text style={{ color:'blue',textDecorationLine:'underline'}} onPress={()=> this.props.navigation.navigate('signin')}>SignIn</Text></Text>
+                  <Text style={{marginTop:10,marginLeft:100}}>Already signUp? <Text style={{ color:'blue',textDecorationLine:'underline'}} onPress={()=> this.props.navigation.navigate('Signin')}>SignIn</Text></Text>
                   
            </View>
             </View>
+            </KeyboardAwareScrollView>
+            <FlashMessage  animated={true}/>  
             </ImageBackground>
         )
     }

@@ -11,7 +11,9 @@ const initialState = {
     formSubmit:false,
     checked:true,
     Customer:false,
-    serviceProvider:false
+    serviceProvider:false,
+    serviceId:'',
+    userType:''
 }
 
 const Auth = (state=initialState,action) => {
@@ -38,7 +40,9 @@ const Auth = (state=initialState,action) => {
         case actionType.SUBMIT_TOKEN:
             return {
                 ...state,
-                token: action.token
+                token: action.token,
+                userType:action.userType,
+                serviceId:action.serviceId
             }
         case actionType.SIGNUP_SUBMIT:
             return {

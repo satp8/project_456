@@ -1,31 +1,38 @@
-import React from 'react';
-import {createAppContainer,createSwitchNavigator,createStackNavigator} from 'react-navigation';
-import SignUp from './AuthComponent/SignUp';
-import SignIn from './AuthComponent/SignIn';
-import Main from './MainComponent/Main';
-import Profile from './MainComponent/Profile';
+    import React from 'react';
+    import {createAppContainer,createSwitchNavigator,createStackNavigator, createBottomTabNavigator} from 'react-navigation';
+    import SignUp from './AuthComponent/SignUp';
+    import SignIn from './AuthComponent/SignIn';
+    import Main from './MainComponent/Main';
+    import Profile from './MainComponent/Profile';
+    import Icon from 'react-native-vector-icons/Ionicons';
 
-const authStack = createSwitchNavigator({
-    signin: SignIn,
-    signup: SignUp,
-   
 
-})
+    const AuthStack = createSwitchNavigator({ 
+        Signin: SignIn, 
+        Signup: SignUp,
+        
+    },{
+        initialRouteName:'Signin'
+    })
 
-const mainStack = createStackNavigator({
-    main:Main, 
-    profile:Profile 
-})
- 
-const appStack = createSwitchNavigator({
-   auth:authStack,
-   main:mainStack
-},
-{
-    initialRouteName: 'auth',
-} 
-)
+    const MainStack = createBottomTabNavigator({   
+        Main:Main, 
+        Profile:Profile 
+    },
+    {
+        initialRouteName:'Main'
+    })
+    
+    const AppStack = createSwitchNavigator({
+       Main:MainStack,  
+       Auth:AuthStack,
+    
+    },
+    {
+        initialRouteName: 'Auth', 
+    }  
+    )
+  
+    const AppContainer = createAppContainer(AppStack)  
 
-const appContainer = createAppContainer(appStack)  
-
-export default appContainer;
+    export default AppContainer;
