@@ -117,11 +117,16 @@ class SignIn extends Component {
             title='Submit'
             buttonStyle={{borderColor:'#000',borderRadius:10}}
             />;
-            }
+            }  
 
-        if(!this.props.token){  
-            this.props.navigation.navigate('Main') 
-        }
+        if(this.props.token){  
+            console.log(this.props.usertype) 
+            if(this.props.usertype === 'customer'){
+                this.props.navigation.navigate('Customer') 
+            }else if(this.props.usertype === 'serviceProvider'){ 
+                this.props.navigation.navigate('Provider')                  
+            }
+        } 
 
         let error;
         if(this.props.error){
@@ -229,7 +234,8 @@ const mapStateToProps = state => {
         password: state.auth.password,
         loading: state.auth.loading,
         token: state.auth.token,
-        error: state.auth.error
+        error: state.auth.error,
+        usertype: state.auth.userType
     }
 }
 

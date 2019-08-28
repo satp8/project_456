@@ -2,8 +2,10 @@
     import {createAppContainer,createSwitchNavigator,createStackNavigator, createBottomTabNavigator} from 'react-navigation';
     import SignUp from './AuthComponent/SignUp';
     import SignIn from './AuthComponent/SignIn';
-    import Main from './MainComponent/Main';
-    import Profile from './MainComponent/Profile';
+    import Main from './CustomerComponent/Main';
+    import Profile from './CustomerComponent/Profile';
+    import Booking from './CustomerComponent/Booking';
+    import ProviderHome from './ProviderComponet/ProviderHome' 
     import Icon from 'react-native-vector-icons/Ionicons';
 
 
@@ -15,18 +17,56 @@
         initialRouteName:'Signin'
     })
 
-    const MainStack = createBottomTabNavigator({   
-        Main:Main, 
-        Profile:Profile 
+    const CustomerStack = createBottomTabNavigator({   
+        Home:Main,
+        Booking:Booking, 
+        Profile:Profile,
+
     },
-    {
-        initialRouteName:'Main'
-    })
+    {   initialRouteName:'Home',
+        defaultNavigationOptions:({navigation}) => ({
+            tabBarIcon:({focused,tintColor}) => {
+                const {routeName} = navigation.state;
+                let iconName;
+                if(routeName === 'Home'){
+                    iconName = 'ios-planet'  
+                    return focused?
+                    <Icon name={iconName} size={30} color='#0abde3'/>:<Icon name={iconName} size={30} color='#c8d6e5'/>;   
+
+                }
+                if(routeName === 'Profile'){ 
+                    iconName = 'ios-contact'   
+                    return focused?
+                    <Icon name={iconName} size={25} color='#0abde3'/>:<Icon name={iconName} size={25} color='#c8d6e5'/>;   
+                    
+                }
+                if(routeName === 'Booking'){
+                    iconName = 'ios-paper-plane'
+                    return focused?
+                    <Icon name={iconName} size={25} color='#0abde3'/>:<Icon name={iconName} size={25} color='#c8d6e5'/>;   
+                    
+                }
+
+            },
+         }),
+         tabBarOptions:{
+            activeTintColor: '#0abde3', 
+         } 
+        })
     
+        const ProviderStack = createBottomTabNavigator({   
+            ProviderHome:ProviderHome
+    
+        },
+        {
+            initialRouteName:'ProviderHome'  
+        }
+        )
+
     const AppStack = createSwitchNavigator({
-       Main:MainStack,  
        Auth:AuthStack,
-    
+       Customer:CustomerStack,  
+       Provider:ProviderStack    
     },
     {
         initialRouteName: 'Auth', 
