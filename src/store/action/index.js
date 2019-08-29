@@ -8,3 +8,6 @@ export {
   checkbox
 } from './Authaction'
 
+export {
+  add_service
+} from './customerServiceAction'

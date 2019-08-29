@@ -2,12 +2,13 @@
     import {createAppContainer,createSwitchNavigator,createStackNavigator, createBottomTabNavigator} from 'react-navigation';
     import SignUp from './AuthComponent/SignUp';
     import SignIn from './AuthComponent/SignIn';
-    import Main from './CustomerComponent/Main';
+    import Main from './CustomerComponent/Home';
     import Profile from './CustomerComponent/Profile';
     import Booking from './CustomerComponent/Booking';
-    import ProviderHome from './ProviderComponet/ProviderHome' 
+    import ProviderHome from './ProviderComponet/ProviderHome';
+    import Service from './CustomerComponent/Service';
     import Icon from 'react-native-vector-icons/Ionicons';
-
+ 
 
     const AuthStack = createSwitchNavigator({ 
         Signin: SignIn, 
@@ -53,6 +54,10 @@
             activeTintColor: '#0abde3', 
          } 
         })
+
+        const CustomerServiceStack = createStackNavigator({
+            Service: Service
+        })
     
         const ProviderStack = createBottomTabNavigator({   
             ProviderHome:ProviderHome
@@ -66,7 +71,8 @@
     const AppStack = createSwitchNavigator({
        Auth:AuthStack,
        Customer:CustomerStack,  
-       Provider:ProviderStack    
+       Provider:ProviderStack,
+       Service:CustomerServiceStack    
     },
     {
         initialRouteName: 'Auth', 

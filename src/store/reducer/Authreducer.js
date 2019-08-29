@@ -19,12 +19,7 @@ const initialState = {
 const Auth = (state=initialState,action) => {
     console.log(action)
     switch(action.type){
-        // case actionType.AUTH_CREATE:
-        //     return {
-        //         ...state,
-        //         token: action.token
-        //     }
-
+    
         case actionType.ADD_AUTH:
             return {
                 ...state,

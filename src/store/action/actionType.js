@@ -6,4 +6,5 @@ export const SIGNUP_ERROR = 'SIGNUP_ERROR'
 export const SUBMIT_TOKEN_ERROR = 'SUBMIT_TOKEN_ERROR';
 export const LOADING_FALSE = 'LOADING_FALSE';
 export const SIGNUP_LOADING = 'SIGNUP_LOADING';
-export const CHECKBOX = 'CHECKBOX'
+export const CHECKBOX = 'CHECKBOX';
+export const ADD_SERVICE = 'ADD_SERVICE';
