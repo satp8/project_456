@@ -1,8 +1,8 @@
 import * as actionType from '../action/actionType';
 
 const initialState = {
-    email:'',
-    password:'',  
+    email:'satishp@gmail.com',
+    password:'satishp',  
     token:'',
     loading:false,
     name:'',

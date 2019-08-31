@@ -5,7 +5,7 @@
     import Main from './CustomerComponent/Main';
     import Profile from './CustomerComponent/Profile';
     import Booking from './CustomerComponent/Booking';
-    import ProviderHome from './ProviderComponet/ProviderHome' 
+    import ProviderHome from './ProviderComponet/service/ProviderHome' 
     import Icon from 'react-native-vector-icons/Ionicons';
 
 
@@ -59,7 +59,10 @@
     
         },
         {
-            initialRouteName:'ProviderHome'  
+            initialRouteName:'ProviderHome',
+            tabBarOptions: {
+                keyboardHidesTabBar : true
+            }
         }
         )
 

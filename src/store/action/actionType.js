@@ -7,3 +7,11 @@ export const SUBMIT_TOKEN_ERROR = 'SUBMIT_TOKEN_ERROR';
 export const LOADING_FALSE = 'LOADING_FALSE';
 export const SIGNUP_LOADING = 'SIGNUP_LOADING';
 export const CHECKBOX = 'CHECKBOX'
+
+
+
+
+//provider
+//==========================
+//services
+export const CREATE_SERVICE = "CREATE_SERVICE"
