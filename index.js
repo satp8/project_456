@@ -14,7 +14,7 @@ const store = configuration();
 const RNapp = () => (
     <Provider store={store}> 
         <Appcontainer/>
-        <App />  
+        <App />   
     </Provider>
 )
 AppRegistry.registerComponent(appName,() => RNapp);

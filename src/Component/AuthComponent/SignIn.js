@@ -9,7 +9,11 @@ import bgimg from '../../../asset/signin.jpg'
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import FlashMessage from "react-native-flash-message";
+import NetInfo from "@react-native-community/netinfo"; 
+import AsyncStorage from '@react-native-community/async-storage';
 
+
+const { width } = Dimensions.get('window');
 
 
 export function YourCustomTransition(animValue, position = "top") {
@@ -45,11 +49,22 @@ class SignIn extends Component {
         }
       this.props.add_auth(userid,uservalue)  
     } 
-  
+    
+    // componentDidMount(){
+    //     this.isconnected()
+    // }
+    // isconnected = () => {
+    //     NetInfo.isConnected.addEventListener('connectionChange',this.connectionhandler)
+    // }
+    // connectionhandler = (isConnected) => { 
+    //     console.log(isConnected)
+    //      this.props.isConnected(isConnected)
+    // }
     onSubmit = () => {  
+        // this.isconnected() 
         var emailval = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         var passval = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
-
+ 
         let email = this.props.email
         let password = this.props.password
 
@@ -72,18 +87,31 @@ class SignIn extends Component {
         }else{
             this.props.on_submit(this.props.email,this.props.password)
         }
-
+        
         // console.log(this.props) 
-        // let errorinfo = null; 
-        // if(this.props.error){
-        //     errorinfo = showMessage({
-        //         message: this.props.error,
-        //         floating:true,
-        //         backgroundColor:'#000',
-        //         position:'center',
-        //         transitionConfig: YourCustomTransition,
-        //       });   
-        // }
+        let errorinfo = null; 
+        if(this.props.error){
+            errorinfo = showMessage({
+                message: this.props.error,
+                floating:true,
+                backgroundColor:'#000',
+                position:'center',
+                transitionConfig: YourCustomTransition,
+              });   
+        }
+
+        if(!this.props.connection){
+            error = showMessage({ 
+                message: 'Connection Error',   
+                floating:true,
+                backgroundColor:'#000',
+                position:'center',
+                transitionConfig: YourCustomTransition, 
+              });  
+            this.props.loading_false()  
+        }
+        this.asyncall() 
+
     }  
     
 
@@ -95,11 +123,34 @@ class SignIn extends Component {
     //             floating:true,
     //             backgroundColor:'#000',
     //             position:'center',
-    //             transitionConfig: YourCustomTransition, 
+    //             transitionConfig: YourCustomTransition,  
                
     //           }); 
     //     }
     //   }
+
+    componentDidMount(){
+        this.asyncall()
+    } 
+
+    asyncall = async() => {
+          console.log('asyncall')
+       
+            const usertoken = await AsyncStorage.getItem('usertoken');  
+            console.log(usertoken) 
+                  
+            if(usertoken){    
+            console.log(this.props.usertype)   
+            if(this.props.usertype === 'customer'){
+                this.props.navigation.navigate('Service') 
+            }else if(this.props.usertype === 'serviceProvider'){ 
+                this.props.navigation.navigate('Provider')                  
+            }
+                // this.props.navigation.navigate('Customer') 
+
+        }      
+        
+    }
     
     render() {
        console.log(this.props.error)
@@ -108,26 +159,32 @@ class SignIn extends Component {
         if(this.props.loading){
             loading = <Button title='Submit' loading titleStyle={{color:'#000'}} type='outline' title='Submit'  buttonStyle={{borderColor:'#000',borderRadius:10}} />
         }  
+        let network;
+        if(!this.props.connection){ 
+            network = <View style={styles.offlineContainer}>
+                      <Text style={styles.offlineText}>No Internet Connection</Text>
+                      </View>
+        }
+                
 
         if(this.props.error){
             loading = <Button 
             onPress={this.onSubmit} 
             titleStyle={{color:'#000'}}
-            type='outline' 
+            type='outline'  
             title='Submit'
             buttonStyle={{borderColor:'#000',borderRadius:10}} 
             />;
             }  
-
-        if(!this.props.token){   
-            // console.log(this.props.usertype) 
-            // if(this.props.usertype === 'customer'){
-            //     this.props.navigation.navigate('Customer') 
-            // }else if(this.props.usertype === 'serviceProvider'){ 
-            //     this.props.navigation.navigate('Provider')                  
-            // }
-                this.props.navigation.navigate('Customer') 
-
+        
+       
+        if(this.props.token){    
+            console.log(this.props.usertype)  
+            if(this.props.usertype === 'customer'){
+                this.props.navigation.navigate('Service') 
+            }else if(this.props.usertype === 'serviceProvider'){ 
+                this.props.navigation.navigate('Provider')                  
+            }
         } 
 
         let error;
@@ -141,11 +198,14 @@ class SignIn extends Component {
               });  
             this.props.loading_false()
         }
+
+      
      
         return(
             <ImageBackground source={bgimg} style={{width:'100%',height:'100%'}}>   
              {/* <KeyboardAwareScrollView> */}
             <View style={styles.container}>
+              {network}
             <View style={{marginTop:100}}> 
                <Input 
                   inputContainerStyle={{borderWidth:1,borderRadius:20,margin:10}} 
@@ -165,7 +225,7 @@ class SignIn extends Component {
                           color='#000'
                       />
                   } />
-                  <View>
+                  <View> 
                    {this.errorinfo}
                    {error} 
                   </View>
@@ -179,7 +239,7 @@ class SignIn extends Component {
                   caretHidden={false}
                   name='password'
                   leftIcon={  
-                      <Icon 
+                      <Icon  
                           style={{marginRight:10}} 
                           name='ios-lock'   
                           size={30}
@@ -225,6 +285,18 @@ const styles = StyleSheet.create({
         marginLeft: 150
 
     },
+      offlineContainer: {
+          backgroundColor: '#b52424',
+          height: 30,
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'row',
+          width,
+          position: 'absolute',
+          
+        },
+    offlineText: { color: '#fff' }
+     
    
 })
 
@@ -237,7 +309,8 @@ const mapStateToProps = state => {
         loading: state.auth.loading,
         token: state.auth.token,
         error: state.auth.error,
-        usertype: state.auth.userType
+        usertype: state.auth.userType,
+        connection: state.customerservice.connectionInfo 
     }
 }
 
@@ -245,7 +318,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         add_auth:(userid,uservalue) => dispatch(projectaction.add_auth(userid,uservalue)),
         on_submit:(email,password) => dispatch(projectaction.signin(email,password)),
-        loading_false: () => dispatch(projectaction.loading_false()) 
+        loading_false: () => dispatch(projectaction.loading_false()),
 
     }
 }
