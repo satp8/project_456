@@ -12,9 +12,8 @@ import Icons from 'react-native-vector-icons/FontAwesome5';
 import CardView from 'react-native-cardview'
 import { withNavigation } from 'react-navigation';
 import AsyncStorage from '@react-native-community/async-storage';
-import {Transition} from 'react-navigation-fluid-transitions';
 
-
+  
 class Home extends Component {  
         static navigationOptions = ({navigation}) => {
           console.log(navigation)
