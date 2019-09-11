@@ -43,12 +43,17 @@ export const signin  = (email,password) => {
             if(token){ 
                 dispatch(submit_token(userType,token,serviceId,userName,email))  
                 dispatch(submit_token_error(error))
-                AsyncStorage.setItem('usertoken',token)   
+                AsyncStorage.setItem('usertoken',token)  
+                AsyncStorage.setItem('usertype',userType) 
             }
             if(error) {
                 dispatch(submit_token_error(error))
             }
         }) 
+        .catch(error => {
+            dispatch(networkError())
+            console.log(error.Error)
+        })
     } 
 }    
 
@@ -81,6 +86,14 @@ export const submit_token_error = (error) => {
         })
     }
 }
+
+export const networkError = () => {
+    return dispatch => {
+        dispatch({
+            type:actionType.NETWORK_ERROR
+        })
+    }
+}
 export const signup_form_submission = (userid,uservalue) => {
     return dispatch => {
         dispatch(add_auth(userid,uservalue))
@@ -106,6 +119,7 @@ export const signup_form_database = (name,email,password,role) => {
         .catch((error)=>{
                 console.log(error)
                 dispatch(signup_error(error)) 
+                dispatch(networkError())
             }) 
         } 
 }

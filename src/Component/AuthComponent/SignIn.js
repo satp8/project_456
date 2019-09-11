@@ -100,6 +100,7 @@ class SignIn extends Component {
               });   
         }
 
+
         if(!this.props.connection){
             error = showMessage({ 
                 message: 'Connection Error',   
@@ -177,7 +178,16 @@ class SignIn extends Component {
             />;
             }  
         
-       
+            if(this.props.networkError){
+                errorinfo = showMessage({
+                    message: this.props.networkError,
+                    floating:true,
+                    backgroundColor:'#000',
+                    position:'center',
+                    transitionConfig: YourCustomTransition,
+                  });   
+            this.props.loading_false()
+            }
         if(this.props.token){    
             console.log(this.props.usertype)  
             if(this.props.usertype === 'customer'){
@@ -310,7 +320,8 @@ const mapStateToProps = state => {
         token: state.auth.token,
         error: state.auth.error,
         usertype: state.auth.userType,
-        connection: state.customerservice.connectionInfo 
+        connection: state.customerservice.connectionInfo,
+        networkError: state.auth.networkerror 
     }
 }
 

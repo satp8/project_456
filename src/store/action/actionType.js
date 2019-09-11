@@ -40,3 +40,4 @@ export const MODAL_VIEW = 'MODAL_VIEW';
 export const REQUEST_DETAIL = 'REQUEST_DETAIL';
 export const CONNECTION_INFO = 'CONNECTION_INFO';
 export const CLEAR_TOKEN = 'CLEAR_TOKEN';
+export const NETWORK_ERROR = 'NETWORK_ERROR';

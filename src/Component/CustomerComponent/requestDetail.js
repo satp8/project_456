@@ -9,7 +9,6 @@ import Modal from 'react-native-modal';
 import { TextInput } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as projectaction from '../../store/action/index';
-import {Transition} from 'react-navigation-fluid-transitions';
  
 
 class requestdetail extends Component {
@@ -193,9 +192,7 @@ class requestdetail extends Component {
             <View>
                {modalView} 
            </View>
-           <Transition shared='home' appear='horizontal' >
            <Text style={{fontSize:20}}>{this.props.requestDescription}</Text>
-           </Transition>
            <Image source={bgimg} style={{width:'50%',borderRadius:100,marginTop:20}} />   
            <Badge value={this.props.status} containerStyle={{margin:10}} textStyle={{alignContent:'center',alignItems:'center',justifyContent:'center'}} badgeStyle={{paddingVertical:10}}/>    
            <View style={{flexDirection:'row'}}> 

@@ -166,6 +166,17 @@ class SignUp extends Component {
             />
         } 
 
+        if(this.props.networkError){
+            errorinfo = showMessage({
+                message: this.props.networkError,
+                floating:true,
+                backgroundColor:'#000',
+                position:'center',
+                transitionConfig: YourCustomTransition,
+              });   
+        this.props.loading_false()
+        }
+
         if(this.props.error){
         loading = <Button 
         onPress={this.onSubmit} 
@@ -329,7 +340,9 @@ const mapStateToprops = (state) => {
         customer:state.auth.customer,
         serviceProvider:state.auth.serviceProvider,
         error:state.auth.error,
-        connection: state.customerservice.connectionInfo 
+        connection: state.customerservice.connectionInfo,
+        networkError: state.auth.networkerror 
+
 
     }
 }
@@ -340,7 +353,8 @@ const mapDispatchToProps = dispatch => {
         signup_form_database: (name,email,password,role) => dispatch(projectAction.signup_form_database(name,email,password,role)),
         loading_false:() => dispatch(projectAction.loading_false()),
         checkbox: (userType) => dispatch(projectAction.checkbox(userType)),
-        loading_false: () => dispatch(projectAction.loading_false())
+        loading_false: () => dispatch(projectAction.loading_false()),
+
     }
 }
 export default connect(mapStateToprops,mapDispatchToProps)(SignUp);
