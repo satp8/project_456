@@ -22,7 +22,7 @@ class Authloading extends Component {
             // else if(usertoken && role === 'serviceProvider'){
             //     this.props.navigation.navigate('Provider')              
             // }
-            else{
+            else{ 
                 this.props.navigation.navigate('Auth')              
             }
         

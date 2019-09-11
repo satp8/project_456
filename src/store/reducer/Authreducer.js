@@ -12,9 +12,10 @@ const initialState = {
     checked:true,
     customer:false,
     serviceProvider:false,
-    serviceId:'',
+    serviceId:'', 
     userType:'',
-    userName:'' 
+    userName:'',
+    networkerror:null
 }
 
 const Auth = (state=initialState,action) => { 
@@ -60,6 +61,14 @@ const Auth = (state=initialState,action) => {
                 error: action.error,
                 loading:false
             }
+
+            case actionType.NETWORK_ERROR:
+            
+                return {
+                    ...state,
+                    networkerror: 'Network Error',
+                   
+                }
         case actionType.LOADING_FALSE:
             return {
                 ...state,  
@@ -69,7 +78,8 @@ const Auth = (state=initialState,action) => {
                 error:'',
                 name:'', 
                 customer:false,
-                serviceProvider:false
+                serviceProvider:false,
+                networkerror:null
             }
         case actionType.SIGNUP_LOADING:
             return {
