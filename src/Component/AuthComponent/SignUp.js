@@ -9,7 +9,6 @@ import { showMessage, hideMessage } from "react-native-flash-message";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import FlashMessage from "react-native-flash-message";
 
-
 export function YourCustomTransition(animValue, position = "top") {
     const opacity = animValue.interpolate({
       inputRange: [0, 1], 

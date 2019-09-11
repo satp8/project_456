@@ -5,7 +5,7 @@ import * as projectaction from '../../store/action/index';
 import {View,Text,StyleSheet,ImageBackground,Dimensions,ActivityIndicator,TouchableNativeFeedback,TextInput,KeyboardAvoidingView} from 'react-native';
 import {Input,Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
-import bgimg from '../../../asset/Memariani.jpg'
+import bgimg from '../../../asset/signin.jpg'
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import FlashMessage from "react-native-flash-message";
@@ -115,17 +115,19 @@ class SignIn extends Component {
             titleStyle={{color:'#000'}}
             type='outline' 
             title='Submit'
-            buttonStyle={{borderColor:'#000',borderRadius:10}}
+            buttonStyle={{borderColor:'#000',borderRadius:10}} 
             />;
             }  
 
-        if(this.props.token){  
-            console.log(this.props.usertype) 
-            if(this.props.usertype === 'customer'){
+        if(!this.props.token){   
+            // console.log(this.props.usertype) 
+            // if(this.props.usertype === 'customer'){
+            //     this.props.navigation.navigate('Customer') 
+            // }else if(this.props.usertype === 'serviceProvider'){ 
+            //     this.props.navigation.navigate('Provider')                  
+            // }
                 this.props.navigation.navigate('Customer') 
-            }else if(this.props.usertype === 'serviceProvider'){ 
-                this.props.navigation.navigate('Provider')                  
-            }
+
         } 
 
         let error;
