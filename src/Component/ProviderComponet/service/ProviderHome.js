@@ -4,24 +4,28 @@ import GetService from './getservice'
 import SetService from './setservice'
 import Icon from 'react-native-vector-icons/Ionicons';
 class ProviderHome extends Component {
-    static navigationOptions = {
-        title: 'Services',
-        headerStyle: {
-            shadowOpacity: 0,
-            elevation: 0,
-            backgroundColor: '#6190E8'
-        },
-        headerRight: (
-            <View style={{ flexDirection: 'row', marginRight : 15 }}>
-                <Icon.Button
-                    name='ios-contact'
-                    size={30}
-                    color='#fff'
-                    style={{backgroundColor : '#6190E8'}}
-                />
-            </View>
+    static navigationOptions = ({ navigation }) => {
+        return {
+            title: 'Services',
+            headerStyle: {
+                shadowOpacity: 0,
+                elevation: 0,
+                backgroundColor : 'black'
+            },
+            headerRight: (
+                <View style={{ flexDirection: 'row', marginRight: 15 }}>
+                    <Icon.Button
+                        name='ios-contact'
+                        size={30}
+                        color='#fff'
+                        style={{ backgroundColor: 'black' }}
+                        onPress={() => navigation.navigate('ProviderProfile')}
+                    />
+                </View>
 
-        )
+            )
+        }
+
 
     };
     render() {
@@ -38,7 +42,7 @@ class ProviderHome extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#6190E8',
+        backgroundColor: 'black',
         justifyContent: 'flex-start',
     },
     inputContainer: {

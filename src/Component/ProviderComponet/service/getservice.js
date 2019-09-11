@@ -13,7 +13,7 @@ class GetService extends Component {
         };
     }
     componentDidMount() {
-        this.props.dispatch(providerDisplayList())
+        this.props.dispatch(providerDisplayList(this.props.userdata.token))
     }
     componentDidUpdate() {
         if (this.props.providerservice.display_service_loader === true) {
@@ -24,10 +24,12 @@ class GetService extends Component {
     _keyExtractor = (item, index) => item._id;
 
     handledelete = (data) => {
-        this.props.dispatch(providerDeleteService(data))
+        let deletetoken = this.props.userdata.token
+        this.props.dispatch(providerDeleteService(data, deletetoken))
     }
     handleUpdate = (id, value) => {
-        this.props.dispatch(providerUpdateService(id, value))
+        let updatetoken = this.props.userdata.token
+        this.props.dispatch(providerUpdateService(id, value, updatetoken))
 
     }
     _renderItem = ({ item }) => {
@@ -54,7 +56,7 @@ class GetService extends Component {
                 <Container>
                     <Content padder>
                         <Card style={styles.card}>
-                            <CardItem header bordered style={{ alignItems: 'center', backgroundColor: '#6190E8' }}>
+                            <CardItem header bordered style={{ alignItems: 'center', backgroundColor: 'black' }}>
                                 <Text style={styles.headerText}>ServiceList</Text>
                             </CardItem>
                             <CardItem bordered>
@@ -103,6 +105,7 @@ const styles = StyleSheet.create({
 })
 const mapStateToProps = (state) => {
     return {
+        userdata: state.auth,
         providerservice: state.providerservice
     }
 }

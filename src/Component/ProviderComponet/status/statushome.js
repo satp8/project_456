@@ -31,17 +31,16 @@ class StatusHome extends Component {
         this.props.dispatch(Loader())
     }
     componentDidMount() {
-        
         this.props.dispatch(Loader())
          this.props.navigation.setParams({ handleRefresh: this._handleRefresh });
     }
     componentDidUpdate() {
         if (this.props.statusrequestdetails.loader === true) {
-            this.props.dispatch(status_details())
+            let token = this.props.userdata.token
+            this.props.dispatch(status_details(token))
         }
     }
     render() {
-        console.log('status render')
         const { statusdetails, loader } = this.props.statusrequestdetails
         if (loader === true) {
             return (
@@ -72,6 +71,7 @@ class StatusHome extends Component {
 }
 const mapStateToProps = (state) => {
     return {
+        userdata: state.auth,
         statusrequestdetails: state.providerstatus
     }
 }

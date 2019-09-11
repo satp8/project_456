@@ -8,7 +8,7 @@ export const createService = (data, accesstoken) => {
     const config = {
         headers: {
             "Accept": "application/json",
-            'x-access-token': '7vvld0kdly',
+            'x-access-token': accesstoken,
             "Content-type": "application/json",
         }
     }
@@ -28,11 +28,11 @@ export const createService = (data, accesstoken) => {
 
     }
 }
-export const providerDisplayList = () => {
+export const providerDisplayList = (token) => {
     return dispatch => {
         axios.get('http://13.127.108.174:3000/uc/serviceList', {
             headers: {
-                'x-access-token': 'blwg4xdddn5',
+                'x-access-token': token,
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         })
@@ -58,13 +58,13 @@ export const providerDisplayList = () => {
             })
     }
 }
-export const providerDeleteService = (data) => {
+export const providerDeleteService = (data, token) => {
     return dispatch => {
         fetch('http://13.127.108.174:3000/uc/deleteService', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                'x-access-token': '7vvld0kdly',
+                'x-access-token': token,
             },
             body: JSON.stringify({ serviceId: data })
         })
@@ -86,13 +86,13 @@ export const providerDeleteService = (data) => {
             })
     }
 }
-export const providerUpdateService = (id, value) => {
+export const providerUpdateService = (id, value, token) => {
     return dispatch => {
         fetch('http://13.127.108.174:3000/uc/updateService', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'x-access-token': '7vvld0kdly',
+                'x-access-token': token,
             },
             body: JSON.stringify({
                 serviceId: id,

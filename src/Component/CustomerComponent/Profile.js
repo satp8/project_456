@@ -13,6 +13,7 @@ class Profile extends Component {
   }
     static navigationOptions= ({navigation}) => {
         return{
+        headerTitle:'Profile',
         headerRight: (
             <Button title='Back' 
             onPress={() => {

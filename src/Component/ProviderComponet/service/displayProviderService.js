@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
 
     modalheader: {
         flex: 0.2,
-        backgroundColor: '#6190E8',
+        backgroundColor: 'black',
         justifyContent: 'center',
         alignItems: 'center'
     },

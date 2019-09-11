@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, Modal, TouchableOpacity, ActivityIndicator, Alert, StyleSheet } from 'react-native'
-import { Container, Header, Content, Card, CardItem, Text, Badge, Picker, Body, Button, Right, Left, H2 } from 'native-base';
+import { View, Modal, TouchableOpacity, ActivityIndicator, Alert, StyleSheet, Picker } from 'react-native'
+import { Container, Header, Content, Card, CardItem, Text, Badge, Body, Button, Right, Left, H2 } from 'native-base';
 import { UpdateStatusLoader, UpdateStatus, UpdateValue } from '../../../store/action/providerstatus'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -15,10 +15,10 @@ class customerstatusmodal extends Component {
         let list_item = [];
         let value;
         if (pickerstatus === 'Accepted') {
-            list_item = ['Completed']
+            list_item = ['','Completed']
         }
         else if (pickerstatus === 'Pending') {
-            list_item = ['Accepted', 'Rejected', 'Completed']
+            list_item = ['','Accepted', 'Rejected', 'Completed']
         }
         value = list_item.map((x, i) => {
             return (<Picker.Item label={x} key={i} value={x} />)
@@ -30,12 +30,12 @@ class customerstatusmodal extends Component {
 
         if (this.props.statusrequestdetails.updatestatusloader === true) {
             return (
-                <ActivityIndicator size="large" color="#6190E8" />
+                <ActivityIndicator size="large" color="black" />
             )
         }
         else {
             return (
-                <Button style={{ backgroundColor: '#6190E8' }} onPress={this.handleModalSubmit}>
+                <Button style={{ backgroundColor: 'black' }} onPress={this.handleModalSubmit}>
                     <Text>Submit</Text>
                 </Button>
             )
@@ -63,7 +63,7 @@ class customerstatusmodal extends Component {
                 serviceRequestId: this.props.data.serviceRequestId,
                 status: this.props.statusrequestdetails.statusvalue
             }
-            this.props.dispatch(UpdateStatus(requestBody))
+            this.props.dispatch(UpdateStatus(requestBody, this.props.userdata.token))
 
         }
         else if (updatestatusloader === false) {
@@ -79,7 +79,7 @@ class customerstatusmodal extends Component {
                 transparent={true}
                 visible={this.props.visible}
                 onRequestClose={() => {
-                    Alert.alert('Modal has been closed.');
+                    this.props.closeModal(false)
                 }}>
                 <View style={{
                     flex: 1,
@@ -97,7 +97,7 @@ class customerstatusmodal extends Component {
 
                         <Container>
                             <Content>
-                                <CardItem style={{ height: 60, backgroundColor: '#6190E8' }} header bordered>
+                                <CardItem style={{ height: 60, backgroundColor: 'black' }} header bordered>
                                     <Left>
                                         <Text style={{ fontWeight: 'bold', fontSize: 18, color: 'white' }}>UpdateStatus</Text>
                                     </Left>
@@ -105,9 +105,9 @@ class customerstatusmodal extends Component {
                                         <Icon.Button
                                             name='ios-close-circle'
                                             size={30}
-                                            color='black'
+                                            color='white'
                                             onPress={this.props.closeModal(false)}
-                                            backgroundColor='#6190E8'
+                                            backgroundColor='black'
                                         />
                                     </Right>
                                 </CardItem>
@@ -146,11 +146,14 @@ class customerstatusmodal extends Component {
                                         <Right style={styles.modalrightcontent}>
 
                                             <Picker
-                                                style={{ height: 50, width: "100%" }}
+                                                style={{ height: 50, width : 150}}
                                                 selectedValue={this.props.statusrequestdetails.statusvalue}
                                                 onValueChange={(itemValue, itemIndex) =>
                                                     this.props.dispatch(UpdateValue(itemValue))
-                                                }>
+                                                }
+                                                mode='dropdown'
+                                                >
+                                                
 
                                                 {this.getPickerValue(status)}
 
@@ -184,11 +187,12 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     modalrightcontent: {
-        alignItems: 'center'
+        alignItems: 'flex-start'
     }
 })
 const mapStateToProps = (state) => {
     return {
+        userdata: state.auth,
         statusrequestdetails: state.providerstatus
     }
 }

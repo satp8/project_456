@@ -49,7 +49,8 @@ class customerstatusview extends Component {
     }
     componentDidUpdate() {
         if (this.props.statusrequestdetails.loader === true) {
-            this.props.dispatch(status_details())
+            let token = this.props.userdata.token
+            this.props.dispatch(status_details(token))
         }
     }
     render() {
@@ -97,6 +98,7 @@ class customerstatusview extends Component {
 
 const mapStateToProps = (state) => {
     return {
+        userdata: state.auth,
         statusrequestdetails: state.providerstatus
     }
 }

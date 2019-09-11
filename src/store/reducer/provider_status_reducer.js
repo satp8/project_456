@@ -28,7 +28,7 @@ const customerService = (state = initialState, action) => {
         case actionType.PROVIDER_STATUS_UPDATE:
             return {
                 ...state,
-                updatestatusloader: action.payload
+                updatestatusloader: false
             }
         case actionType.PROCIDER_STATUS_VALUE:
             return {

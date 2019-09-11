@@ -33,7 +33,7 @@ class SetService extends Component {
   toggleSubmitIcon = () => {
     if (this.props.providerservice.spinner === true) {
       return (
-        <ActivityIndicator size={50} color="#0000ff" />
+        <ActivityIndicator size={40} color="black" />
       )
     }
     else {
@@ -42,7 +42,7 @@ class SetService extends Component {
           style={{ marginRight: 10 }}
           name='ios-add-circle'
           size={40}
-          color='#6190E8'
+          color='black'
           onPress={() => this.handleSubmit()}
         />
       )
