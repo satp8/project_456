@@ -1,13 +1,14 @@
 import React,{Component} from 'react';
 import * as projectAction from '../../store/action/index';
 import {connect} from 'react-redux';
-import {View,Text,StyleSheet,ImageBackground,ActivityIndicator,TouchableNativeFeedback,TextInput} from 'react-native';
+import {View,Text,StyleSheet,ImageBackground,ActivityIndicator,TouchableNativeFeedback,TextInput,Dimensions} from 'react-native';
 import {Input,Button,CheckBox} from 'react-native-elements';
 import bgimg from '../../../asset/Memariani.jpg'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import FlashMessage from "react-native-flash-message";
+const { width } = Dimensions.get('window');
 
 export function YourCustomTransition(animValue, position = "top") {
     const opacity = animValue.interpolate({
@@ -33,8 +34,8 @@ class SignUp extends Component {
     checkboxhandler = (type) => {
 
         let  userType
-        if(type === 'Customer'){
-            userType = 'Customer'
+        if(type === 'customer'){
+            userType = 'customer'
           
 
         }else if(type === 'serviceProvider'){ 
@@ -111,7 +112,7 @@ class SignUp extends Component {
         //         transitionConfig: YourCustomTransition,
         //     }); 
         // }
-        else if(this.props.Customer === false && this.props.serviceProvider === false){
+        else if(this.props.customer === false && this.props.serviceProvider === false){
             errorinfo = showMessage({
                 message: 'Please choose the role',
                 floating:true,
@@ -121,12 +122,22 @@ class SignUp extends Component {
               }); 
         }
 
-        if(this.props.Customer === true && this.props.serviceProvider === false){
-            this.props.signup_form_database(name,email,password,'Customer') 
-        }else if(this.props.Customer === false && this.props.serviceProvider === true){
+        if(this.props.customer === true && this.props.serviceProvider === false){
+            this.props.signup_form_database(name,email,password,'customer') 
+        }else if(this.props.customer === false && this.props.serviceProvider === true){
             this.props.signup_form_database(name,email,password,'serviceProvider') 
         }
         
+        if(!this.props.connection){
+            error = showMessage({ 
+                message: 'Connection Error',   
+                floating:true,
+                backgroundColor:'#000',
+                position:'center',
+                transitionConfig: YourCustomTransition, 
+              });  
+            this.props.loading_false()  
+        }
     }
   
     render(){
@@ -139,7 +150,12 @@ class SignUp extends Component {
         title='Submit'
         buttonStyle={{borderColor:'#000',borderRadius:10}}
         />;
-
+        let network;
+        if(!this.props.connection){ 
+            network = <View style={styles.offlineContainer}>
+                      <Text style={styles.offlineText}>No Internet Connection</Text>
+                      </View>
+        }
         if(this.props.loading){
             loading = <Button 
             title='Submit' 
@@ -181,6 +197,7 @@ class SignUp extends Component {
             <ImageBackground source={bgimg} style={{width: '100%', height: '100%'}}>
                  <KeyboardAwareScrollView>
             <View style={styles.container}>
+              {network}
             <View style={{marginTop:100}}> 
                <Input 
                   inputContainerStyle={{borderWidth:1,borderRadius:20,margin:10}} 
@@ -243,11 +260,11 @@ class SignUp extends Component {
 
                   <View style={{flexDirection:'row',marginLeft:25}}>
                   <CheckBox 
-                    title='Customer' 
-                    checked={this.props.Customer}
+                    title='Customer'   
+                    checked={this.props.customer}
                     containerStyle={{backgroundColor:'transparent',borderWidth:0}}  
                     checkedColor='#2c3e50'
-                    onPress={(e)=> this.checkboxhandler('Customer')}
+                    onPress={(e)=> this.checkboxhandler('customer')}  
 
                   />
                   <CheckBox 
@@ -288,6 +305,17 @@ const styles = StyleSheet.create({
         marginTop:10,
         marginLeft:100  
     },
+    offlineContainer: {
+        backgroundColor: '#b52424',
+        height: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+        width,
+        position: 'absolute',
+        
+      },
+  offlineText: { color: '#fff' }
 })
 
 const mapStateToprops = (state) => {
@@ -298,9 +326,11 @@ const mapStateToprops = (state) => {
         form_submit: state.auth.formSubmit, 
         loading:state.auth.loading,
         token: state.auth.token,
-        Customer:state.auth.Customer,
+        customer:state.auth.customer,
         serviceProvider:state.auth.serviceProvider,
-        error:state.auth.error
+        error:state.auth.error,
+        connection: state.customerservice.connectionInfo 
+
     }
 }
 

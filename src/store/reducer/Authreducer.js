@@ -10,10 +10,11 @@ const initialState = {
     userid:'',
     formSubmit:false,
     checked:true,
-    Customer:false,
+    customer:false,
     serviceProvider:false,
     serviceId:'',
-    userType:''
+    userType:'',
+    userName:'' 
 }
 
 const Auth = (state=initialState,action) => {
@@ -37,7 +38,9 @@ const Auth = (state=initialState,action) => {
                 ...state,
                 token: action.token,
                 userType:action.userType,
-                serviceId:action.serviceId
+                serviceId:action.serviceId,
+                userName:action.userName,
+                email:action.email
             }
         case actionType.SIGNUP_SUBMIT:
             return {
@@ -65,7 +68,7 @@ const Auth = (state=initialState,action) => {
                 password:'',
                 error:'',
                 name:'', 
-                Customer:false,
+                customer:false,
                 serviceProvider:false
             }
         case actionType.SIGNUP_LOADING:
@@ -74,38 +77,44 @@ const Auth = (state=initialState,action) => {
                 loading:true
             }
         
+        case actionType.CLEAR_TOKEN:
+            return {
+                ...state,
+                token:''
+            }
+        
         case actionType.CHECKBOX:
             console.log(action)
-            if(action.userType === 'Customer' ){
+            if(action.userType === 'customer' ){
                 if(state.serviceProvider === false){
                     return {
                         ...state,
-                        Customer: !state.Customer,
+                        customer: !state.customer,
                         serviceProvider: state.serviceProvider
                     }
                 }else if(state.serviceProvider === true){
                     return {
                         ...state,
-                        Customer: !state.Customer, 
+                        customer: !state.customer, 
                         serviceProvider: !state.serviceProvider
                     } 
                 }
                  
             }
             else if(action.userType === 'serviceProvider' ){ 
-                if(state.Customer === false){
+                if(state.customer === false){
                     return {
                         ...state,
-                        Customer: state.Customer,
+                        customer: state.customer,
                         serviceProvider: !state.serviceProvider
                     }
-                }else if(state.Customer === true){
+                }else if(state.customer === true){
                     return {
                         ...state,
-                        Customer: !state.Customer, 
+                        customer: !state.customer, 
                         serviceProvider: !state.serviceProvider
                     }
-                }
+                } 
             }
 
         default:

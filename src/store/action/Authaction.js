@@ -1,6 +1,7 @@
 import * as actionType from './actionType';
 import axiosdata from  '../../../axios/axios';
 import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
  
 export const add_auth = (userid,uservalue) => {
     return dispatch => {
@@ -27,15 +28,22 @@ export const signin  = (email,password) => {
         axios.post('http://13.127.108.174:3000/uc/loginUser',data)
         .then((response) => { 
              console.log(response)
-            let userType = response.data.data[0].value.userType
-            let token = response.data.data[0].value.token
-            let serviceId = response.data.data[0].value.serviceId 
-            let error = response.data.message  
-            console.log(error) 
-            console.log(token)
-            if(token){
-                dispatch(submit_token(userType,token,serviceId)) 
+             let error;
+             
+             if(response.data.message){
+                error = response.data.message  
                 dispatch(submit_token_error(error))
+             }
+            let userType = response.data.data[0].value.userType
+            let token = response.data.data[0].value.token     
+            let serviceId = response.data.data[0].value._id 
+            let userName = response.data.data[0].value.userName
+            let email = response.data.data[0].value.email  
+            console.log(error) 
+            if(token){ 
+                dispatch(submit_token(userType,token,serviceId,userName,email))  
+                dispatch(submit_token_error(error))
+                AsyncStorage.setItem('usertoken',token)   
             }
             if(error) {
                 dispatch(submit_token_error(error))
@@ -44,13 +52,23 @@ export const signin  = (email,password) => {
     } 
 }    
 
-export const submit_token = (userType,token,serviceId) => {
+export const submit_token = (userType,token,serviceId,userName,email) => {
     return dispatch => {
         dispatch({
             type:actionType.SUBMIT_TOKEN,
             token: token,
             userType:userType,
-            serviceId:serviceId
+            serviceId:serviceId,
+            userName:userName,
+            email:email
+        })
+    }
+}
+
+export const cleartoken = () => {
+    return dispatch => {
+        dispatch({
+            type:actionType.CLEAR_TOKEN
         })
     }
 }
@@ -126,7 +144,7 @@ export const signup_submit = () => {
 
 export const signup_error = (error) => {
     return dispatch => {
-        dispatch({
+        dispatch({ 
             type:actionType.SIGNUP_ERROR,
             error:error
         })
