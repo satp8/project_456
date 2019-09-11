@@ -14,9 +14,17 @@ class Authloading extends Component {
           console.log('asyncall')
        
             const usertoken = await AsyncStorage.getItem('usertoken');  
-            console.log(usertoken) 
+            const role = await AsyncStorage.getItem('usertype');  
             console.log(usertoken? 'Service':'Auth')
-            this.props.navigation.navigate(usertoken? 'Service':'Auth')              
+            if(usertoken && role === 'customer'){
+                this.props.navigation.navigate('Service')              
+            }
+            // else if(usertoken && role === 'serviceProvider'){
+            //     this.props.navigation.navigate('Provider')              
+            // }
+            else{
+                this.props.navigation.navigate('Auth')              
+            }
         
     }
 

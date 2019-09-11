@@ -43,7 +43,8 @@ export const signin  = (email,password) => {
             if(token){ 
                 dispatch(submit_token(userType,token,serviceId,userName,email))  
                 dispatch(submit_token_error(error))
-                AsyncStorage.setItem('usertoken',token)   
+                AsyncStorage.setItem('usertoken',token)  
+                AsyncStorage.setItem('usertype',userType) 
             }
             if(error) {
                 dispatch(submit_token_error(error))

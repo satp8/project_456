@@ -1,8 +1,8 @@
 import * as actionType from '../action/actionType';
 
 const initialState = {
-    email:'satishp@gmail.com',
-    password:'satishp',  
+    email:'',
+    password:'',  
     token:'',
     loading:false,
     name:'',
@@ -17,7 +17,7 @@ const initialState = {
     userName:'' 
 }
 
-const Auth = (state=initialState,action) => {
+const Auth = (state=initialState,action) => { 
     console.log(action)
     switch(action.type){
     

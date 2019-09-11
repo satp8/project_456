@@ -1,18 +1,18 @@
 import React from 'react';
 import {Button} from 'react-native-elements';
-import {createAppContainer,createSwitchNavigator,createStackNavigator, createBottomTabNavigator} from 'react-navigation';
+import {createAppContainer,createSwitchNavigator,createStackNavigator, createBottomTabNavigator,StackViewTransitionConfigs} from 'react-navigation';
 import SignUp from './AuthComponent/SignUp';
 import SignIn from './AuthComponent/SignIn';
 import Main from './CustomerComponent/Home';
 import Profile from './CustomerComponent/Profile';
 import Booking from './CustomerComponent/Booking';
-import ProviderHome from './ProviderComponet/ProviderHome';
+import ProviderHome from './ProviderComponet/service/ProviderHome'; 
 import Service from './CustomerComponent/Service';
 import RequestDetail from './CustomerComponent/requestDetail';
 import Icon from 'react-native-vector-icons/Ionicons'; 
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import AuthLoading from './AuthLoading'; 
-import {FluidNavigator, Transition} from 'react-navigation-fluid-transitions';
+import {FluidNavigator, Transition} from 'react-navigation-fluid-transitions'; 
 
 import ProviderStatusScreen from './ProviderComponet/status/statushome'
 import ProviderStatusDetails from './ProviderComponet/status/customerstatusview'
