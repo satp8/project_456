@@ -67,6 +67,8 @@ class customerstatusmodal extends Component {
 
         }
         else if (updatestatusloader === false) {
+            console.log(this.props)
+            debugger
             this.props.closeModal(false)
         }
 
