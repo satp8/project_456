@@ -4,10 +4,11 @@ import Appcontainer from './src/Component/Navigation';
 import NetInfo from "@react-native-community/netinfo"; 
 import {connect} from 'react-redux';
 import * as projectaction from './src/store/action/index'; 
-
+import SplashScreen from 'react-native-splash-screen'
 
 class App extends Component {
   componentDidMount(){
+    SplashScreen.hide();
     this.isconnected()
 }
 isconnected = () => {
