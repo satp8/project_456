@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { ListItem, Thumbnail, Text, Left, Body, Right, Button, Badge, Content } from 'native-base';
 import CustomerStatusModal from './customerstatusmodal'
-
-export default class CustomerStatus extends React.Component {
+import { modalToggle } from '../../../store/action/providerstatus'
+import { connect } from 'react-redux'
+class CustomerStatus extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -17,36 +18,28 @@ export default class CustomerStatus extends React.Component {
             }
         }
     }
-    getDetails = (data, status_color) => {
-        this.setState((prevstate) => {
+    getDetails = ({ data, color }) => {
+        this.setState(state => {
             return {
                 data: {
                     name: data.serviceId.serviceName,
                     status: data.status,
-                    color: status_color,
+                    color: color,
                     description: data.description,
                     serviceRequestId: data._id,
                 },
-
-                visibleModal: true,
             }
         }, () => {
-            console.log(this.state)
+            this.props.dispatch(modalToggle(true))
         })
 
     }
-    toggleModal = (data) => {
-        console.log('close modal called')
-        this.setState({
-            visibleModal: data
-        })
-    }
+
     render() {
         return (
             <Content>
-                <ListItems filterdatas={this.props.filterdata} getDetails={(data, color) => this.getDetails(data, color)} />
-
-                <CustomerStatusModal visible={this.state.visibleModal} closeModal={() => this.toggleModal} data={this.state.data} />
+                <ListItems filterdatas={this.props.filterdata} getDetails={this.getDetails} />
+                <CustomerStatusModal data={this.state.data} />
             </Content>
         )
     }
@@ -68,11 +61,15 @@ function ListItems(props) {
                 statuscolor = "green"
                 break
         }
+        let badgeValue = data.serviceId.serviceName.charAt(0)
+
         return (
             <Content>
                 <ListItem key={data._id} thumbnail>
                     <Left>
-                        <Thumbnail circle source={require('../../../../asset/user.jpg')} />
+                        <Badge style={{ backgroundColor: 'black' }}>
+                            <Text style={{ color: 'white' }}>{badgeValue}</Text>
+                        </Badge>
                     </Left>
                     <Body>
                         <Text>{data.serviceId.serviceName}</Text>
@@ -85,12 +82,17 @@ function ListItems(props) {
 
                         {
                             data.status === 'Pending' ? (
-                                <Text onPress={() => props.getDetails(data, statuscolor)}>ChangeStatus</Text>
+                                <Text onPress={() => props.getDetails({
+                                    data: data,
+                                    color: statuscolor
+                                })}>ChangeStatus</Text>
                             ) : null
                         }
                         {
                             data.status === 'Accepted' ? (
-                                <Text onPress={() => props.getDetails(data, statuscolor)}>ChangeStatus</Text>
+                                <Text onPress={() => props.getDetails(
+                                    { data: data, color: statuscolor }
+                                )}>ChangeStatus</Text>
 
                             ) : null
                         }
@@ -103,3 +105,4 @@ function ListItems(props) {
     return listitem
 
 }
+export default connect()(CustomerStatus)

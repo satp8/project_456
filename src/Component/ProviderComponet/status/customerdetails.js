@@ -20,7 +20,7 @@ function CustomerDetails(props) {
                         <Icon
                             name='ios-arrow-dropright'
                             size={30}
-                            color='#6190E8'
+                            color='black'
                             onPress={(value) => {
                                 props.navigation.navigate('StatusDetails', {
                                     userId: data.customerId._id,

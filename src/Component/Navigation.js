@@ -18,6 +18,7 @@ import ProviderStatusScreen from './ProviderComponet/status/statushome'
 import ProviderStatusDetails from './ProviderComponet/status/customerstatusview'
 import Search from './ProviderComponet/status/search'
 
+
 const AuthStack = createSwitchNavigator({
     Signin: SignIn,
     Signup: SignUp,

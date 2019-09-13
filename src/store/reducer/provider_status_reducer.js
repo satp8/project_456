@@ -4,7 +4,9 @@ const initialState = {
     loader: false,
     updatestatusloader: false,
     statusvalue: '',
-    refresh: false
+    refresh: false,
+    modaltoggleValue : false,
+    customerdetails : []
 }
 
 const customerService = (state = initialState, action) => {
@@ -23,12 +25,20 @@ const customerService = (state = initialState, action) => {
         case actionType.PROVIDER_STATUS_UPDATE_LOADER:
             return {
                 ...state,
-                updatestatusloader: action.payload
+                updatestatusloader: action.payload,
+              
+            }
+        case actionType.PROVIDER_CUSTOMER_DETAILS :
+            return {
+                ...state,
+                customerdetails : action.payload
             }
         case actionType.PROVIDER_STATUS_UPDATE:
             return {
                 ...state,
-                updatestatusloader: false
+                statusvalue: '',
+                updatestatusloader: action.payload.statusloader,
+                modaltoggleValue : action.payload.modalloader
             }
         case actionType.PROCIDER_STATUS_VALUE:
             return {
@@ -40,6 +50,10 @@ const customerService = (state = initialState, action) => {
             return {
                 ...state, refresh: action.payload
             }
+        case actionType.PROVIDER_STATUS_MODAL: 
+        return { 
+            ...state, modaltoggleValue: action.payload
+        }
         default:
             return state
     }

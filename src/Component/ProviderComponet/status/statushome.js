@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Container, Content, List, Card } from 'native-base'
-import { ActivityIndicator, View } from 'react-native'
+import { ActivityIndicator, View, StyleSheet } from 'react-native'
 import { Loader, status_details } from '../../../store/action/providerstatus'
 import CustomerView from './customerdetailsview'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux'
-
+import { RectButton, BorderlessButton } from 'react-native-gesture-handler';
 class StatusHome extends Component {
     constructor(props) {
         super(props);
@@ -15,15 +15,26 @@ class StatusHome extends Component {
         return {
             title: 'Service Status',
             headerRight: (
-                <View style={{marginRight : 5}}>
+                <View style={styles.headerbtn}>
+                <BorderlessButton
+                    style={{ marginRight: 15 }}>
                     <Icon
+                        name="ios-search"
+                        onPress={() => navigation.navigate('Search')}
+                        size={Platform.OS === 'ios' ? 22 : 25}
+                        style={{ fontWeight: 'bold' }}
+                        // color={SearchLayout.DefaultTintColor}
+                        color="#fff"
+                    />
+                </BorderlessButton>
+                <Icon
                         name='ios-refresh'
                         size={25}
                         color='#fff'
                         style={{ fontWeight: 'bold', marginRight: 15 }}
                         onPress={navigation.getParam('handleRefresh')}
                     />
-                </View>
+            </View>
             )
         }
     };
@@ -69,6 +80,13 @@ class StatusHome extends Component {
         }
     }
 }
+const styles = StyleSheet.create({
+    headerbtn: {
+        flexDirection: 'row',
+        marginRight: 3,
+        padding: 4
+    }
+})
 const mapStateToProps = (state) => {
     return {
         userdata: state.auth,

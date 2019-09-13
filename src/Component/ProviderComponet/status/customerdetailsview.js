@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import CustomerDetails from './customerdetails'
+import {setCustomerDetails} from '../../../store/action/providerstatus'
+import {connect} from 'react-redux'
 class CustomerView extends Component {
     constructor(props) {
         super(props);
@@ -20,7 +22,9 @@ class CustomerView extends Component {
                         seen.add(data.customerId._id)
                         return data
                     }
+
                 })
+               this.props.dispatch(setCustomerDetails(filterdata))
             }
             else {
                 return false
@@ -35,5 +39,5 @@ class CustomerView extends Component {
 
     }
 }
-export default CustomerView;
+export default connect()(CustomerView);
 

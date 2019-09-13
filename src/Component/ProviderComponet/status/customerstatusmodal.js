@@ -4,6 +4,7 @@ import { Container, Header, Content, Card, CardItem, Text, Badge, Body, Button, 
 import { UpdateStatusLoader, UpdateStatus, UpdateValue } from '../../../store/action/providerstatus'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons';
+import { modalToggle } from  '../../../store/action/providerstatus'
 class customerstatusmodal extends Component {
     constructor(props) {
         super(props);
@@ -15,10 +16,10 @@ class customerstatusmodal extends Component {
         let list_item = [];
         let value;
         if (pickerstatus === 'Accepted') {
-            list_item = ['','Completed']
+            list_item = ['', 'Completed']
         }
         else if (pickerstatus === 'Pending') {
-            list_item = ['','Accepted', 'Rejected', 'Completed']
+            list_item = ['', 'Accepted', 'Rejected', 'Completed']
         }
         value = list_item.map((x, i) => {
             return (<Picker.Item label={x} key={i} value={x} />)
@@ -57,32 +58,25 @@ class customerstatusmodal extends Component {
         }
     }
     componentDidUpdate(prevprops, prevstate) {
-        const { updatestatusloader } = this.props.statusrequestdetails
+        const { updatestatusloader} = this.props.statusrequestdetails
         if (updatestatusloader === true) {
             let requestBody = {
                 serviceRequestId: this.props.data.serviceRequestId,
                 status: this.props.statusrequestdetails.statusvalue
             }
             this.props.dispatch(UpdateStatus(requestBody, this.props.userdata.token))
-
         }
-        else if (updatestatusloader === false) {
-            console.log(this.props)
-            debugger
-            this.props.closeModal(false)
-        }
-
     }
     render() {
         const { name, status, color, description } = this.props.data
+        const { modaltoggleValue } = this.props.statusrequestdetails
         return (
             <Modal
                 animationType="fade"
                 transparent={true}
-                visible={this.props.visible}
-                onRequestClose={() => {
-                    this.props.closeModal(false)
-                }}>
+                visible={modaltoggleValue}
+                onRequestClose={() =>
+                    this.props.dispatch(modalToggle(false))}>
                 <View style={{
                     flex: 1,
                     flexDirection: 'column',
@@ -108,7 +102,7 @@ class customerstatusmodal extends Component {
                                             name='ios-close-circle'
                                             size={30}
                                             color='white'
-                                            onPress={this.props.closeModal(false)}
+                                            onPress={() => this.props.dispatch(modalToggle(false))}
                                             backgroundColor='black'
                                         />
                                     </Right>
@@ -148,14 +142,14 @@ class customerstatusmodal extends Component {
                                         <Right style={styles.modalrightcontent}>
 
                                             <Picker
-                                                style={{ height: 50, width : 150}}
+                                                style={{ height: 50, width: 150 }}
                                                 selectedValue={this.props.statusrequestdetails.statusvalue}
                                                 onValueChange={(itemValue, itemIndex) =>
                                                     this.props.dispatch(UpdateValue(itemValue))
                                                 }
                                                 mode='dropdown'
-                                                >
-                                                
+                                            >
+
 
                                                 {this.getPickerValue(status)}
 

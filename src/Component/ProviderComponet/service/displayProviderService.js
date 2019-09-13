@@ -39,11 +39,7 @@ class displayProviderService extends Component {
         this.toggleModal()
         this.props.update(this.props.item._id, this.state.updatedValue)
     }
-    componentDidUpdate() {
-        console.log(this.props.item)
-    }
     render() {
-        console.log('item...', this.props.item)
         return (
             <View style={styles.listcontainer}>
                 <View style={{ width: '72%', justifyContent: 'flex-start'}}>

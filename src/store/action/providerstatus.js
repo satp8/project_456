@@ -24,6 +24,18 @@ export const refreshStatus = (value) => {
         payload: value
     }
 }
+export const modalToggle = (value) => {
+    return {
+        type: actionType.PROVIDER_STATUS_MODAL,
+        payload: value
+    }
+}
+export const setCustomerDetails = (data) => {
+    return {
+        type : actionType.PROVIDER_CUSTOMER_DETAILS,
+        payload: data
+    }
+}
 export const UpdateStatus = (data, token) => {
     return dispatch => {
         fetch('http://13.127.108.174:3000/uc/changeStatus', {
@@ -35,35 +47,44 @@ export const UpdateStatus = (data, token) => {
             body: JSON.stringify(data)
         }).then((res) => res.json())
             .then((res) => {
-               if (res.status === 200 && res.message === 'Status Changed') {
+                if (res.status === 200 && res.message === 'Status Changed') {
+                    let sucessdata = {
+                        statusloader: false,
+                        modalloader : false
+                    }
                     Alert.alert(
                         'Success',
                         'Status Updated Succesfully',
                         [
                             {
                                 text: 'OK',
+                                onPress: () => dispatch({type: actionType.PROVIDER_STATUS_UPDATE, payload: sucessdata})
+
                             },
+
                         ],
                         { cancelable: false },
                     );
 
 
                 } else if (res.status === 404 || res.message === 'Cannot change status') {
+                    let faileddata = {
+                        statusloader: false,
+                        modalloader : true
+                    }
                     Alert.alert(
                         'Try Again',
                         'Status Cannot be Changed',
                         [
                             {
                                 text: 'OK',
+                                onPress: () => dispatch({type: actionType.PROVIDER_STATUS_UPDATE, payload: faileddata})
                             },
                         ],
                         { cancelable: false },
                     );
                 }
-                dispatch({
-                    type: actionType.PROVIDER_STATUS_UPDATE,
-                    payload: false
-                })
+
 
             })
             .catch((err) => alert(err.message))

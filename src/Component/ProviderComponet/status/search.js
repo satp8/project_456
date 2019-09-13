@@ -1,70 +1,74 @@
 
 import * as React from 'react';
-import {StyleSheet, View, Text} from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import { RectButton, BorderlessButton } from 'react-native-gesture-handler';
 import SearchLayout from 'react-navigation-addon-search-layout';
-class ResultScreen extends React.Component {
-    static navigationOptions = {
-      title: 'Result',
-    };
-   
-    render() {
-      return (
-        <View style={styles.container}>
-          <Text>{this.props.navigation.getParam('text')} result!</Text>
-        </View>
-      );
-    }
-  }
+import { connect } from 'react-redux'
+import { Container, Content, List, Card } from 'native-base'
+import CustomerSerchResult from './searchResult'
 class SearchScreen extends React.Component {
-    static navigationOptions = {
-      header: null,
-    };
-   
-    state = {
-      searchText: null,
-    };
-   
-    _handleQueryChange = searchText => {
-      this.setState({ searchText });
-    };
-   
-    _executeSearch = () => {
-      alert('do search!');
-    };
-   
-    render() {
-      let { searchText } = this.state;
-   
-      return (
-        <SearchLayout
-          onChangeQuery={this._handleQueryChange}
-          onSubmit={this._executeSearch}>
-          {searchText ? (
-            <RectButton
-              style={{
-                borderBottomWidth: StyleSheet.hairlineWidth,
-                borderBottomColor: '#eee',
-                paddingVertical: 20,
-                paddingHorizontal: 15,
-              }}
-              onPress={() =>
-                this.props.navigation.navigate('Result', {
-                  text: this.state.searchText,
-                })
-              }>
-              <Text style={{ fontSize: 14 }}>{searchText}!</Text>
-            </RectButton>
-          ) : null}
-        </SearchLayout>
-      );
-    }
+  static navigationOptions = {
+    header: null,
+  };
+  componentDidMount() {
+    console.log(this.props.customer)
   }
-  export default SearchScreen
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-  });
+  state = {
+    searchText: null,
+
+  };
+
+  _handleQueryChange = searchText => {
+    this.setState({ searchText });
+  };
+
+  // _executeSearch = () => {
+  //   alert('do search!');
+  // };
+
+  render() {
+    let { searchText } = this.state;
+    return (
+      <Container>
+        <Content>
+          <Card>
+            <List>
+              <SearchLayout
+                onChangeQuery={this._handleQueryChange}
+              // onSubmit={this._executeSearch}
+              >
+                {searchText ? (
+                  <RectButton
+                    style={{
+                      borderBottomWidth: StyleSheet.hairlineWidth,
+                      borderBottomColor: '#eee',
+                      // paddingVertical: 20,
+                      // paddingHorizontal: 15,
+                    }}
+                  >
+                    <CustomerSerchResult data={this.props.customer.customerdetails} searchText={this.state.searchText} />
+                  </RectButton>
+                ) : null}
+              </SearchLayout>
+            </List>
+          </Card>
+        </Content>
+      </Container>
+
+    );
+  }
+}
+const mapStateToProps = (state) => {
+  return {
+    // userdata: state.auth,
+    customer: state.providerstatus
+  }
+}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
+export default connect(mapStateToProps)(SearchScreen)
